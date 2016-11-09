@@ -63,10 +63,13 @@ public class ShowResults extends HttpServlet {
                 
                 
                 for(int i = 0; i<searched_res.size();i++){ 
-                        HttpSession session = request.getSession();
+                        HttpSession session = request.getSession(false);
+                        String newName = searched_res.get(i).getName();
+                        String tmp = new String();
+                        tmp = newName.replaceAll("\\s+","");
                         session.setAttribute("name", searched_res.get(i).getName());
                         out.println("<tr>");
-                        out.println("<ul><h1><a href=\"#\" onclick=\"$(this).closest('form').submit()\" id=\"res_name\">"+searched_res.get(i).getName()+" </a></h1></ul>");
+                        out.println("<ul><h1><a onclick=\"$(this).closest('form').submit()\" id=\"res_name\">"+searched_res.get(i).getName()+" </a></h1></ul>");
                         out.println("<ul> "+searched_res.get(i).getDescription()+" </ul>");
                         out.println("<ul> "+searched_res.get(i).getCousineType()+" </ul>");
                         out.println("<ul><a href=\""+searched_res.get(i).getWebSiteUrl()+"\">"+searched_res.get(i).getWebSiteUrl()+"</a> </ul>");

@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>dbpassword</param-name>
-        <param-value>root</param-value>
+        <param-value>000117gm</param-value>
     </context-param>
     <context-param>
         <param-name>dbuser</param-name>

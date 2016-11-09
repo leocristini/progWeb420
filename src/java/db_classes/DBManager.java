@@ -48,6 +48,7 @@ public class DBManager implements Serializable {
     *@param username: il nome utente
     *@param password: la password
     *@return: null se l'utente non è autenticato, un oggetto User se l'utente esiste ed è autenticato
+     * @throws java.sql.SQLException
     */
     
     public User authenticate(String username, String password) throws SQLException{
@@ -64,7 +65,6 @@ public class DBManager implements Serializable {
                 if (rs.next()){
                     User user = new User();
                     user.setUsername(username);
-                    user.setEmail(rs.getString("email"));
                     user.setFirstname(rs.getString("firstname"));
                     user.setLastname(rs.getString("lastname"));
                     user.setUsertype(rs.getString("user_type"));

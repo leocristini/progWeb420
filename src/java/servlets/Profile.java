@@ -46,19 +46,57 @@ public class Profile extends HttpServlet {
         
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        
-        HttpSession session = request.getSession();
-        String tmp = (String) session.getAttribute("name");
-        session.removeAttribute("name");
-        out.println("<html><head><title>"+tmp+"</title>");
+        //prendo il nome del ristorante passato come parametro
+        String tmp = new String();
+        tmp = request.getParameter("name");
+        String restName = new String();
+        restName = tmp.replaceAll("_", " ");
+                
+        out.println("<html><head><title>"+restName+"</title>");
         request.getRequestDispatcher("header.jsp").include(request, response);
         
         Restaurant res_tmp = new Restaurant();
-        res_tmp = manager.getRestaurant(tmp);
+        res_tmp = manager.getRestaurant(restName);
         out.println("<div class=\"jumbotron\" id=\"jumbo-res\" background=\""+ res_tmp.getPhotoPath() +"\">");
         System.out.println("nome: "+res_tmp.getName());
         out.println("<h1 id=\"profile-res-title\">"+res_tmp.getName()+"</h1>");
+        if(request.getSession().getAttribute("user")!=null){
+            //puo settare il voto con le stelline solo se loggato
+            out.println("<div name=\"rating\" class=\"col-md-offset-8 acidjs-rating-stars\">"+
+                        "<form>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-0\" value=\"5\" /><label for=\"group-2-0\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-1\" value=\"4\" /><label for=\"group-2-1\"></label>"+
+                            "<input type=\"radio\" checked=\"checked\" name=\"group-2\" id=\"group-2-2\" value=\"3\" /><label for=\"group-2-2\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-3\" value=\"2\" /><label for=\"group-2-3\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-4\"  value=\"1\" /><label for=\"group-2-4\"></label>"+
+                        "</form></div>");
+            }else{
+                //vuol dire che non è loggato e non puo settare le stelline
+                out.println("<div name=\"rating\" class=\"col-md-offset-8 acidjs-rating-stars acidjs-rating-disabled\">"+
+                        "<form>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-0\" value=\"5\" /><label for=\"group-2-0\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-1\" value=\"4\" /><label for=\"group-2-1\"></label>"+
+                            "<input type=\"radio\"  name=\"group-2\" id=\"group-2-2\" value=\"3\" /><label for=\"group-2-2\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-3\" value=\"2\" /><label for=\"group-2-3\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-4\"  value=\"1\" /><label for=\"group-2-4\"></label>"+
+                        "</form></div>");
+            }
+        //provo a stampare il punteggio
+        
+        System.out.println(request.getAttribute("rating"));
         out.println("</div>");
+        
+        
+        
+        //qui ci metto descrizione ristorante + stelline
+        out.println("<div class=col-md-2></div>");
+        
+        out.println("<div class=col-md-6>");
+        
+           //qua descrizione
+        
+        out.println("</div><div class=col-md-2></div><script src=\"media/js/jquery-3.1.1.min.js\"></script>\n" +
+"        <script src=\"media/js/scripts.js\"></script>");
         
         out.println("</body></html>");
         

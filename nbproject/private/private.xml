@@ -5,8 +5,7 @@
         <group>
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/web/addRestaurant_page.jsp</file>
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/db_classes/DBManager.java</file>
-            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/web/media/js/scripts.js</file>
-            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/servlets/LoginServlet.java</file>
+            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/servlets/LogoutServlet.java</file>
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/web/index.jsp</file>
         </group>
     </open-files>

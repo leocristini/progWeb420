@@ -94,8 +94,32 @@ public class Profile extends HttpServlet {
         out.println("<div class=col-md-6>");
         
            //qua descrizione
+           out.println(res_tmp.getDescription()
+           +"<br><h3>Oradi di apertura:</h3> "+res_tmp.getOpeningHours()
+           +"<br><h3>Where are we:<br></h3>");
+           //qui andrebbe mappa
+           
         
-        out.println("</div><div class=col-md-2></div><script src=\"media/js/jquery-3.1.1.min.js\"></script>\n" +
+        out.println("</div><div class=col-md-2></div>");
+        out.println("<div class=\"row\"><div class=\"col-md-2 col-md-offset-8\"");
+        if(request.getSession().getAttribute("user")!=null){
+            //se è loggato allora ha l' opportunità di commentare
+            out.println("<form action=\"AddComment\" type=\"POST\">"
+                    + "<label for=\"comment\">Add a comment for this restaurant</label>"
+                    + "<input type=\"text\" id=\"comment\" name=\"comment\"/>"
+                    + "<br>"
+                    + "<button class=\"btn btn-default\" type=\"submit\" formmethod=\"post\">Comment</button>"
+                    + "</form>");
+        }
+        else{
+        
+            out.println("<label for=\"comment\">Add a comment for this restaurant</label><br>"
+                    + "<a href=\"login_page.jsp\">You must be logged in to add a review</a>"
+                    + "<br>");
+        
+        }
+        
+        out.println("</div><script src=\"media/js/jquery-3.1.1.min.js\"></script>\n" +
 "        <script src=\"media/js/scripts.js\"></script>");
         
         out.println("</body></html>");

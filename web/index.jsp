@@ -82,8 +82,8 @@
             <div class="col-md-2"></div>
             
         </nav>
-                
-        <div clas="jumbotron" id="jumbo-custom">
+        <img id="bg_image" src="media/images/home_restaurant.jpg">
+        <div clas="jumbotron" >
             <h1>The best way to eat</h1>
         </div>
         

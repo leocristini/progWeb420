@@ -32,10 +32,15 @@
   transition: all .5s;
 }
 
+#bg_image{
+    top:0px;
+    height:100;
+    position: absolute;
+}
 
 .navbar-custom{
     background: transparent;
-    
+
 }
 
 #barra-ricerca{
@@ -68,12 +73,12 @@
   top: .5em;
   width: 30px;
   z-index: 30;
+  
 }
 
 body{
     padding-top: 70px;
     background-color: bisque;
-    background-image: url('../images/home_restaurant.jpg');
     background-repeat: no-repeat;
     height:400px;
     top:0px;

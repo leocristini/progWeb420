@@ -73,6 +73,10 @@
 body{
     padding-top: 70px;
     background-color: bisque;
+    background-image: url('../images/home_restaurant.jpg');
+    background-repeat: no-repeat;
+    height:400px;
+    top:0px;
 }
 #profile-res-title{
     
@@ -83,6 +87,7 @@ body{
 #jumbo-res{
     top:0px
 }
+
 
 //questo codice serve per far andare le stelline
 

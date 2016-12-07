@@ -16,31 +16,38 @@ public class Restaurant implements Serializable{
     private int id;
     private int priority;
     private String name;
+    private String address;
+    private int civicNumber;
+    private String city;
     private String description;
     private String webSiteUrl;
-    private String cousineType;
-    private String openingHours;
-    private double price;
+    private String[] cuisineTypes;
+    private WeekSchedule week;
+    private int price;
     private String photoPath;
     
     /**
      * @return the id
      */
     public int getIt(){
-        return id;
+        return getId();
     }
+    
     public void setId(int id){
         this.id = id;
     }
+    
     /**
      * @return the priority
      */
     public int getPriority(){
         return priority;
     }
+    
     public void setPriority(int priority){
         this.priority = priority;
     }
+    
     /**
      * @return the name
      */
@@ -84,44 +91,16 @@ public class Restaurant implements Serializable{
     }
 
     /**
-     * @return the cousineType
-     */
-    public String getCousineType() {
-        return cousineType;
-    }
-
-    /**
-     * @param cousineType the cousineType to set
-     */
-    public void setCousineType(String cousineType) {
-        this.cousineType = cousineType;
-    }
-
-    /**
-     * @return the openingHours
-     */
-    public String getOpeningHours() {
-        return openingHours;
-    }
-
-    /**
-     * @param openingHours the openingHours to set
-     */
-    public void setOpeningHours(String openingHours) {
-        this.openingHours = openingHours;
-    }
-
-    /**
      * @return the price
      */
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
     /**
      * @param price the price to set
      */
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
     
@@ -137,6 +116,83 @@ public class Restaurant implements Serializable{
      */
     public void setPhotoPath(String photoPath) {
         this.photoPath = photoPath;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the civicNumber
+     */
+    public int getCivicNumber() {
+        return civicNumber;
+    }
+
+    /**
+     * @param civicNumber the civicNumber to set
+     */
+    public void setCivicNumber(int civicNumber) {
+        this.civicNumber = civicNumber;
+    }
+
+    /**
+     * @return the city
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * @param city the city to set
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * @return the cuisineTypes
+     */
+    public String[] getCuisineTypes() {
+        return cuisineTypes;
+    }
+
+    /**
+     * @param cuisineTypes the cuisineTypes to set
+     */
+    public void setCuisineTypes(String[] cuisineTypes) {
+        this.cuisineTypes = cuisineTypes;
+    }
+
+    /**
+     * @return the week
+     */
+    public WeekSchedule getWeek() {
+        return week;
+    }
+
+    /**
+     * @param week the week to set
+     */
+    public void setWeek(WeekSchedule week) {
+        this.week = week;
     }
     
     

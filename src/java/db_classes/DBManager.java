@@ -185,7 +185,7 @@ public class DBManager implements Serializable {
                 pst.setString(1, tmp.getName());
                 ResultSet resu = pst.executeQuery();
                 System.out.println(resu.getString("cuisines.id"));
-                tmp.setCousineType(resu.getString("cuisines.id"));
+                //tmp.setCuisineTypes(resu.getString("cuisines.id"));
                 //qua la query per prendere il sito web
                 //tmp.setWebSiteUrl(query);
                 //altra query per prendere gli orari d' apertura
@@ -240,9 +240,9 @@ public class DBManager implements Serializable {
                     PreparedStatement pst = con.prepareStatement(query);
                     pst.setString(1, tmp.getName());
                     ResultSet resu = pst.executeQuery();
-                    if(resu.next()){
-                        tmp.setCousineType(resu.getString(1));
-                    }
+                    //if(resu.next()){
+                    //    tmp.setCuisineTypes(resu.getString(1));
+                    //}
                     resu.close();
                     pst.close(); 
                     //qua la query per prendere foto sito web
@@ -306,9 +306,9 @@ public class DBManager implements Serializable {
                 PreparedStatement pst = con.prepareStatement(query);
                 pst.setString(1, tmp.getName());
                 ResultSet resu = pst.executeQuery();
-                if(resu.next()){
-                    tmp.setCousineType(resu.getString(1));
-                }
+                //if(resu.next()){
+                //    tmp.setCuisineTypes(resu.getString(1));
+                //}
                 query = "SELECT path FROM photos WHERE id_restaurant = ?";
                 pst = con.prepareCall(query);
                 pst.setInt(1, rs.getInt("id"));

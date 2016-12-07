@@ -5,8 +5,9 @@
         <group>
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/web/addRestaurant_page.jsp</file>
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/db_classes/DBManager.java</file>
-            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/servlets/LogoutServlet.java</file>
-            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/web/index.jsp</file>
+            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/servlets/AddRestaurant.java</file>
+            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/db_classes/WeekSchedule.java</file>
+            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/db_classes/Restaurant.java</file>
         </group>
     </open-files>
 </project-private>

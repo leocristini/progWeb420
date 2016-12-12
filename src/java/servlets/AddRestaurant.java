@@ -14,10 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import db_classes.Restaurant;
+import db_classes.User;
 import db_classes.WeekSchedule;
 import java.io.File;
 import java.sql.Time;
 import java.util.Enumeration;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -58,6 +60,8 @@ public class AddRestaurant extends HttpServlet {
                 
         Restaurant restaurant = new Restaurant();
         WeekSchedule week = new WeekSchedule();
+        
+        boolean isOwner = false;
         
         //File upload and week schedule
         try{
@@ -121,6 +125,10 @@ public class AddRestaurant extends HttpServlet {
                     restaurant.setCuisineTypes(multi.getParameterValues(name));
                 }
                 
+                //Getting parameter to know if creator is also owner
+                if(name.equals("isOwner")){
+                    isOwner = true;
+                }
                 //Getting week schedule
                 if(name.equals("days")){
                     for(String s: value){
@@ -295,8 +303,12 @@ public class AddRestaurant extends HttpServlet {
                 if(f.exists()){
                     restaurant.setPhotoPath(f.toString());
                 }
-                
             }
+            
+            HttpSession session = request.getSession(false);
+            User user = (User) session.getAttribute("user");
+            
+            String creator = user.getUsername();
             
             //just some debug code
             System.out.println("Restaurant data:"

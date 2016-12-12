@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import info.debatty.java.stringsimilarity.*;
+import java.util.logging.Level;
 
 
 /**
@@ -333,9 +334,26 @@ public class DBManager implements Serializable {
     /**
      *
      * @param restaurant that needs to be added to DB
+     * @param creator
      * @return
      */
-    public boolean addRestaurant(Restaurant restaurant){
+    public boolean addRestaurant(Restaurant restaurant, String creator){
+        
+        int next_id = 0;
+        
+        try {
+            String query1 = "SELECT MAX(id) FROM Restaurants";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ResultSet rs1 = ps1.executeQuery();
+            while(rs1.next()){
+                next_id = rs1.getInt(1) + 1;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        String query = "INSERT INTO Restaurant VALUES ";
         
         
         return false;

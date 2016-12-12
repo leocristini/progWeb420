@@ -542,6 +542,17 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <br>
+                            <div class="col-md-6 checkbox-inline">
+                                <input type="checkbox" name="isOwner" value="true">I am the owner of this restaurant
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <div class="col-md-8">
                             <label for="descr_area">Descrizione:</label>

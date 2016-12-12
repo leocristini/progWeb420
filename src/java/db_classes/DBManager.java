@@ -330,4 +330,15 @@ public class DBManager implements Serializable {
         
     }
     
+    /**
+     *
+     * @param restaurant that needs to be added to DB
+     * @return
+     */
+    public boolean addRestaurant(Restaurant restaurant){
+        
+        
+        return false;
+    }
+    
 }

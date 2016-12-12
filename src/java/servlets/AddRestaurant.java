@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import db_classes.Restaurant;
 import db_classes.WeekSchedule;
 import java.io.File;
 import java.sql.Time;
@@ -55,12 +56,14 @@ public class AddRestaurant extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
                 
+        Restaurant restaurant = new Restaurant();
+        WeekSchedule week = new WeekSchedule();
+        
         //File upload and week schedule
         try{
             MultipartRequest multi = new MultipartRequest(request, dirName, 10*1024*1024,
                     "ISO-8859-1", new DefaultFileRenamePolicy());
-            
-            WeekSchedule week = new WeekSchedule();
+        
             
             Enumeration params = multi.getParameterNames();
             while(params.hasMoreElements()){
@@ -69,45 +72,53 @@ public class AddRestaurant extends HttpServlet {
                 
                 //Getting restaurant name
                 if(name.equals("res_name")){
-                    System.out.println("Name: "+multi.getParameter(name));
+                    restaurant.setName(multi.getParameter(name));
                 }
                 
                 //Getting restaurant address
                 if(name.equals("res_addr")){
-                    System.out.println("Address: "+multi.getParameter(name));
+                    restaurant.setAddress(multi.getParameter(name));
                 }
                 
                 //Getting civic number
                 if(name.equals("res_civic")){
-                    System.out.println("Civic number: "+multi.getParameter(name));
+                    restaurant.setCivicNumber(Integer.parseInt(multi.getParameter(name)));
                 }
                 
                 //Getting restaurant city
                 if(name.equals("res_city")){
-                    System.out.println("City: "+multi.getParameter(name));
+                    restaurant.setCity(multi.getParameter(name));
                 }
                 
                 //Getting restaurant price range
                 if(name.equals("price")){
-                    System.out.println("Price range: "+multi.getParameter(name));
+                    String price = multi.getParameter(name);
+                    switch (price) {
+                        case "Bassa":
+                            restaurant.setPrice(1);
+                            break;
+                        case "Media":
+                            restaurant.setPrice(2);
+                            break;
+                        case "Alta":
+                            restaurant.setPrice(3);
+                            break;
+                    }
                 }
                 
                 //Getting restaurant URL
                 if(name.equals("web_url")){
-                    System.out.println("URL: "+multi.getParameter(name));
+                    restaurant.setWebSiteUrl(multi.getParameter(name));
                 }
                 
                 //Getting restaurant description
                 if(name.equals("descrpt")){
-                    System.out.println("Description: "+multi.getParameter(name));
+                    restaurant.setDescription(multi.getParameter(name));
                 }
                 
                 //Getting cuisine types
                 if(name.equals("cuisine_type")){
-                    System.out.println("Cuisine types: ");
-                    for(String s: value){
-                        System.out.print(s+" ");
-                    }
+                    restaurant.setCuisineTypes(multi.getParameterValues(name));
                 }
                 
                 //Getting week schedule
@@ -134,9 +145,6 @@ public class AddRestaurant extends HttpServlet {
                             Time dinner_cl = new Time(monday_d_c_h, monday_d_c_m, 00);
                             week.setMonday_d_op(dinner_op);
                             week.setMonday_d_cl(dinner_cl);
-
-                            System.out.println("Monday: "+lunch_op+" to "+lunch_cl);
-                            System.out.println("Monday: "+dinner_op+" to "+dinner_cl);
                         }
                         if(s.equals("Tuesday")){
                             week.setTuesday(true);
@@ -159,9 +167,6 @@ public class AddRestaurant extends HttpServlet {
                             Time dinner_cl = new Time(tuesday_d_c_h, tuesday_d_c_m, 00);
                             week.setTuesday_d_op(dinner_op);
                             week.setTuesday_d_cl(dinner_cl);
-
-                            System.out.println("Tuesday: "+lunch_op+" to "+lunch_cl);
-                            System.out.println("Tuesday: "+dinner_op+" to "+dinner_cl);
                         }
                         if(s.equals("Wednesday")){
                             week.setWednesday(true);
@@ -184,9 +189,6 @@ public class AddRestaurant extends HttpServlet {
                             Time dinner_cl = new Time(wednesday_d_c_h, wednesday_d_c_m, 00);
                             week.setWednesday_d_op(dinner_op);
                             week.setWednesday_d_cl(dinner_cl);
-
-                            System.out.println("Wednesday: "+lunch_op+" to "+lunch_cl);
-                            System.out.println("Wednesday: "+dinner_op+" to "+dinner_cl);
                         }
                         if(s.equals("Thursday")){
                             week.setThursday(true);
@@ -209,9 +211,6 @@ public class AddRestaurant extends HttpServlet {
                             Time dinner_cl = new Time(thursday_d_c_h, thursday_d_c_m, 00);
                             week.setThursday_d_op(dinner_op);
                             week.setThursday_d_cl(dinner_cl);
-
-                            System.out.println("Thursday: "+lunch_op+" to "+lunch_cl);
-                            System.out.println("Thursday: "+dinner_op+" to "+dinner_cl);
                         }
                         if(s.equals("Friday")){
                             week.setFriday(true);
@@ -235,9 +234,6 @@ public class AddRestaurant extends HttpServlet {
                             Time dinner_cl = new Time(friday_d_c_h, friday_d_c_m, 00);
                             week.setFriday_d_op(dinner_op);
                             week.setFriday_d_cl(dinner_cl);
-
-                            System.out.println("Friday: "+lunch_op+" to "+lunch_cl);
-                            System.out.println("Friday: "+dinner_op+" to "+dinner_cl);
                         }
                         if(s.equals("Saturday")){
                             week.setSaturday(true);
@@ -261,9 +257,6 @@ public class AddRestaurant extends HttpServlet {
                             Time dinner_cl = new Time(saturday_d_c_h, saturday_d_c_m, 00);
                             week.setSaturday_d_op(dinner_op);
                             week.setSaturday_d_cl(dinner_cl);
-
-                            System.out.println("Saturday: "+lunch_op+" to "+lunch_cl);
-                            System.out.println("Saturday: "+dinner_op+" to "+dinner_cl);
                         }
                         if(s.equals("Sunday")){
                             week.setSunday(true);
@@ -287,31 +280,48 @@ public class AddRestaurant extends HttpServlet {
                             Time dinner_cl = new Time(sunday_d_c_h, sunday_d_c_m, 00);
                             week.setSunday_d_op(dinner_op);
                             week.setSunday_d_cl(dinner_cl);
-
-                            System.out.println("Sunday: "+lunch_op+" to "+lunch_cl);
-                            System.out.println("Sunday: "+dinner_op+" to "+dinner_cl);
                         }
                     }
                 }
             }
             
-            
+            restaurant.setWeek(week);
             
             Enumeration files = multi.getFileNames();
             while(files.hasMoreElements()){
                 String name = (String)files.nextElement();
-                String filename = multi.getFilesystemName(name);
-                String originalFilename = multi.getOriginalFileName(name);
-                String type = multi.getContentType(name);
                 File f = multi.getFile(name);
-                if(f != null){
-                    System.out.println("f.toString(): "+f.toString());
-                    System.out.println("f.getName(): "+f.getName());
-                    System.out.println("f.exists(): "+f.exists());
-                    System.out.println("f.lenght(): "+f.length());
+                
+                if(f.exists()){
+                    restaurant.setPhotoPath(f.toString());
                 }
+                
             }
             
+            //just some debug code
+            System.out.println("Restaurant data:"
+                    + "\nName: "+restaurant.getName()
+                    + "\nURL: "+restaurant.getWebSiteUrl()
+                    + "\nAddress: "+restaurant.getAddress()
+                    + "\nCivic: "+restaurant.getCivicNumber()
+                    + "\nCity: "+restaurant.getCity()
+                    + "\nPrice: "+restaurant.getPrice()
+                    + "\nDescription: "+restaurant.getDescription()
+                    + "\nPhotoPath: "+restaurant.getPhotoPath()
+                    + "\nCuisineTypes: ");
+            for(String s: restaurant.getCuisineTypes()){
+                System.out.print(s+" ");
+            }
+            
+            System.out.println("Open days:\n");
+            System.out.println("Monday: "+restaurant.getWeek().isMonday());
+            if(restaurant.getWeek().isMonday()){
+                System.out.println("Lunch: "+restaurant.getWeek().getMonday_l_op()+" to "+restaurant.getWeek().getMonday_l_cl());
+            }
+            System.out.println("Tuesday: "+restaurant.getWeek().isTuesday());
+            if(restaurant.getWeek().isTuesday()){
+                System.out.println("Lunch: "+restaurant.getWeek().getTuesday_l_op()+" to "+restaurant.getWeek().getTuesday_l_cl());
+            }
             
         }catch(IOException ex){
             this.getServletContext().log(ex, "Error reading or saving file");

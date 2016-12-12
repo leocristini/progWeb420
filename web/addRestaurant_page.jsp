@@ -20,13 +20,13 @@
                     <div class="col-md-5">
                         <div class="form-group">
                             <label for="restaurant_name">Name:</label>
-                            <input type="text" name="res_name" id="restaurant_name" class="form-control" placeholder="Name">
+                            <input type="text" required="true" name="res_name" id="restaurant_name" class="form-control" placeholder="Name">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="restaurant_website">Website URL:</label>
-                            <input type="text" name="web_url" id="restaurant_website" class="form-control" placeholder="URL">
+                            <input type="text" required="true" name="web_url" id="restaurant_website" class="form-control" placeholder="URL">
                         </div>
                     </div>
                 </div>
@@ -34,19 +34,19 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="restaurant_address">Address:</label>
-                            <input type="text" name="res_addr" id="restaurant_address" class="form-control" placeholder="Address">
+                            <input type="text" required="true" name="res_addr" id="restaurant_address" class="form-control" placeholder="Address">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="civic_number">Civic number:</label>
-                            <input type="number" name="res_civic" id="civic_number" class="form-control" placeholder="Number">
+                            <input type="number" required="true" name="res_civic" id="civic_number" class="form-control" placeholder="Number">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="restaurant_city">City:</label>
-                            <input type="text" name="res_city" id="restaurant_city" class="form-control" placeholder="City">
+                            <input type="text" required="true" name="res_city" id="restaurant_city" class="form-control" placeholder="City">
                         </div>
                     </div>
                 </div>
@@ -537,7 +537,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="image_upload">Immagine:</label>
-                            <input id="image_upload" name="file_up" type="file" class="form-control">
+                            <input id="image_upload" required="true" name="file_up" type="file" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -545,7 +545,7 @@
                     <div class="form-group">
                         <div class="col-md-8">
                             <label for="descr_area">Descrizione:</label>
-                            <textarea class="form-control" id="descr_area" name="descrpt" placeholder="Description" cols="60" rows="5">
+                            <textarea class="form-control" required="true" id="descr_area" name="descrpt" cols="60" rows="5">
                             </textarea>
                         </div>
                     </div>

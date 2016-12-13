@@ -5,6 +5,7 @@
  */
 package db_classes;
 
+import com.sun.crypto.provider.RSACipher;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -335,28 +336,207 @@ public class DBManager implements Serializable {
      *
      * @param restaurant that needs to be added to DB
      * @param creator
+     * @param isOwner
      * @return
      */
-    public boolean addRestaurant(Restaurant restaurant, String creator){
+    public boolean addRestaurant(Restaurant restaurant, String creator, boolean isOwner){
         
         int next_id = 0;
+        int creator_id = 0;
         
         try {
+            //query to get the next free id for restaurant
             String query1 = "SELECT MAX(id) FROM Restaurants";
             PreparedStatement ps1 = con.prepareStatement(query1);
             ResultSet rs1 = ps1.executeQuery();
             while(rs1.next()){
                 next_id = rs1.getInt(1) + 1;
             }
+            
+            //query to get the id of the creator
+            String query2 = "SELECT id FROM Users WHERE username = ?";
+            PreparedStatement ps2 = con.prepareStatement(query2);
+            ps2.setString(1, creator);
+            ResultSet rs2 = ps2.executeQuery();
+            while(rs2.next()){
+                creator_id = rs2.getInt(1);
+            }
+            
+            //query to add the restaurant to DB
+            String query = "INSERT INTO Restaurants VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(query);
+            
+            ps.setInt(1, next_id);
+            ps.setString(2, restaurant.getName());
+            ps.setString(3, restaurant.getAddress());
+            ps.setInt(4, restaurant.getCivicNumber());
+            ps.setString(5, restaurant.getCity());
+            ps.setString(6, restaurant.getDescription());
+            ps.setString(7, restaurant.getWebSiteUrl());
+            ps.setInt(8, 0);
+            ps.setInt(9, restaurant.getPrice());
+            if(isOwner){
+                ps.setInt(10, creator_id);
+            }else{
+                ps.setInt(10, 0);
+            }
+            ps.setInt(11, creator_id);
+            
+            int update = ps.executeUpdate();
+            
+            //query to add cuisine types to a restaurant_id
+            PreparedStatement psk = con.prepareStatement("INSERT INTO restaurant_cuisine VALUES (?,?)");
+            for(String s : restaurant.getCuisineTypes()){
+                switch (s){
+                    case "Italiana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 1);
+                        psk.executeUpdate();
+                        break;
+                    case "Asiatica":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 2);
+                        psk.executeUpdate();
+                        break;
+                    case "NordAmericana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 3);
+                        psk.executeUpdate();
+                        break;
+                    case "Africana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 4);
+                        psk.executeUpdate();
+                        break;
+                    case "Caraibica":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 5);
+                        psk.executeUpdate();
+                        break;
+                    case "SudAmericana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 6);
+                        psk.executeUpdate();
+                        break;
+                    case "NordEuropea":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 7);
+                        psk.executeUpdate();
+                        break;
+                    case "Mediterranea":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 8);
+                        psk.executeUpdate();
+                        break;
+                    case "MedioOrientale":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 9);
+                        psk.executeUpdate();
+                        break;
+                    case "Vegana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 10);
+                        psk.executeUpdate();
+                        break;
+                    case "FastFood":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 11);
+                        psk.executeUpdate();
+                        break;
+                    case "Pizzeria":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 12);
+                        psk.executeUpdate();
+                        break;
+                }
+            }
+            
+            //query to add hours_ranges
+            PreparedStatement psw = con.prepareStatement("INSERT INTO opening_hours_restaurants VALUES (?,?,?,?,?,?)");
+            WeekSchedule rest_week = restaurant.getWeek();
+            if(rest_week.isMonday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 1);
+                psw.setTime(3, rest_week.getMonday_l_op());
+                psw.setTime(4, rest_week.getMonday_l_cl());
+                psw.setTime(5, rest_week.getMonday_d_op());
+                psw.setTime(6, rest_week.getMonday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isTuesday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 2);
+                psw.setTime(3, rest_week.getTuesday_l_op());
+                psw.setTime(4, rest_week.getTuesday_l_cl());
+                psw.setTime(5, rest_week.getTuesday_d_op());
+                psw.setTime(6, rest_week.getTuesday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isWednesday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 3);
+                psw.setTime(3, rest_week.getWednesday_l_op());
+                psw.setTime(4, rest_week.getWednesday_l_cl());
+                psw.setTime(5, rest_week.getWednesday_d_op());
+                psw.setTime(6, rest_week.getWednesday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isThursday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 4);
+                psw.setTime(3, rest_week.getThursday_l_op());
+                psw.setTime(4, rest_week.getThursday_l_cl());
+                psw.setTime(5, rest_week.getThursday_d_op());
+                psw.setTime(6, rest_week.getThursday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isFriday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 5);
+                psw.setTime(3, rest_week.getFriday_l_op());
+                psw.setTime(4, rest_week.getFriday_l_cl());
+                psw.setTime(5, rest_week.getFriday_d_op());
+                psw.setTime(6, rest_week.getFriday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isSaturday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 6);
+                psw.setTime(3, rest_week.getSaturday_l_op());
+                psw.setTime(4, rest_week.getSaturday_l_cl());
+                psw.setTime(5, rest_week.getSaturday_d_op());
+                psw.setTime(6, rest_week.getSaturday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isSunday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 7);
+                psw.setTime(3, rest_week.getSunday_l_op());
+                psw.setTime(4, rest_week.getSunday_l_cl());
+                psw.setTime(5, rest_week.getSunday_d_op());
+                psw.setTime(6, rest_week.getSunday_d_cl());
+                psw.executeUpdate();
+            }
+            
+            if(update == 0){
+                return false;
+            }
+            
+            ps1.close();
+            rs1.close();
+            ps2.close();
+            rs2.close();
+            ps.close();
+            psk.close();
+            psw.close();
+            
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
-        String query = "INSERT INTO Restaurant VALUES ";
         
-        
-        return false;
+        return true;
     }
     
 }

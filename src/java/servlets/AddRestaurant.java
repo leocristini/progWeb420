@@ -312,6 +312,8 @@ public class AddRestaurant extends HttpServlet {
             
             //just some debug code
             System.out.println("Restaurant data:"
+                    + "\nCreator: "+creator
+                    + "\nIs Owner: "+isOwner
                     + "\nName: "+restaurant.getName()
                     + "\nURL: "+restaurant.getWebSiteUrl()
                     + "\nAddress: "+restaurant.getAddress()
@@ -334,6 +336,10 @@ public class AddRestaurant extends HttpServlet {
             if(restaurant.getWeek().isTuesday()){
                 System.out.println("Lunch: "+restaurant.getWeek().getTuesday_l_op()+" to "+restaurant.getWeek().getTuesday_l_cl());
             }
+            
+            manager.addRestaurant(restaurant, creator, isOwner);
+            
+            response.sendRedirect(request.getContextPath()+"/index.jsp");
             
         }catch(IOException ex){
             this.getServletContext().log(ex, "Error reading or saving file");

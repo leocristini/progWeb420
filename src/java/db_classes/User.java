@@ -13,12 +13,27 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
     
+    private int id;
     private String username;
     private String email;
     private String firstname;
     private String lastname;
     private String usertype;
 
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     /**
      * @return the username
      */

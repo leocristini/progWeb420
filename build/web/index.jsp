@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="db_classes.DBManager"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,10 +25,39 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="media/js/autoCompelte.js"></script>
+         <link rel="stylesheet" href="awesomplete.css" />
+        <script src="awesomplete.js" async></script>
         
     </head>
     <body>
-        
+        <% 
+        Class.forName("org.postgresql.Driver", true, getClass().getClassLoader());
+        DBManager manager = new DBManager( "jdbc:postgresql://localhost:5432/DBFoodSite","postgres","root");
+         manager = (DBManager)super.getServletContext().getAttribute("dbmanager");
+        java.sql.Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/DBFoodSite","postgres","root");
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("SELECT * FROM COORDINATES");
+        ArrayList<Double> latx = new ArrayList();
+        ArrayList<Double> longx = new ArrayList();
+        int dim = 0;
+        while (rs.next()) {
+         Double latz = rs.getDouble("latitude");
+         Double longz = rs.getDouble("longitude");
+         latx.add(latz);
+         longx.add(longz);
+         dim++;
+         }
+        rs = st.executeQuery("SELECT * FROM RESTAURANTS");
+        ArrayList<String> nomi = new ArrayList();
+        while(rs.next()){
+            String nome = rs.getString("name");
+            nomi.add(nome);
+        }
+        session.setAttribute("latx", latx);
+        session.setAttribute("longx", longx);
+        session.setAttribute("dim", dim);
+        session.setAttribute("nomi", nomi);
+        %>
         <nav id="nav-lato">
             <c:if test="${sessionScope.user == null}">
                 <ul class="menu">
@@ -87,7 +121,51 @@
             <h1>The best way to eat</h1>
         </div>
         
+        <div id="map" class="col-md-8 col-md-offset-2"></div>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>  
+         
+        <script>
         
+            function initMap() {
+                var latt = [
+                    <c:forEach var="p" items="${sessionScope.latx}" varStatus="status">
+                        ${status.first ? '' : ','} "${p}"
+                    </c:forEach>
+                ];
+                var logg = [
+                    <c:forEach var="p" items="${sessionScope.longx}" varStatus="status">
+                        ${status.first ? '' : ','} "${p}"
+                    </c:forEach>
+                ];
+                var dim = '<%=dim%>';
+                var posx = {lat: 46.06941967  , lng: 11.12015963};
+
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 10,
+                    center: posx,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+
+                var infowindow = new google.maps.InfoWindow();
+
+                for(var i=0; i<dim; i++) { 
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(latt[i], logg[i]),
+                        map: map
+                    });
+                    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                        return function() {
+                            infowindow.setContent("ristorante");
+                            infowindow.open(map, marker);
+                        };
+                    })(marker, i));
+                }
+
+        
+            }
+    
+    </script>
+          <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLIV2YvvxU-PmpT9MBrApqPx8oDmqcpXs&callback=initMap"></script>
   
         <script src="media/js/jquery-3.1.1.min.js"></script>
         <script src="media/js/scripts.js"></script>

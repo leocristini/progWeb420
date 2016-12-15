@@ -5,6 +5,8 @@
  */
 package db_classes;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +16,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import info.debatty.java.stringsimilarity.*;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -48,6 +58,7 @@ public class DBManager implements Serializable {
     *@param username: il nome utente
     *@param password: la password
     *@return: null se l'utente non è autenticato, un oggetto User se l'utente esiste ed è autenticato
+     * @throws java.sql.SQLException
     */
     
     public User authenticate(String username, String password) throws SQLException{
@@ -64,7 +75,7 @@ public class DBManager implements Serializable {
                 if (rs.next()){
                     User user = new User();
                     user.setUsername(username);
-                    user.setEmail(rs.getString("email"));
+                    user.setId(rs.getInt("id"));
                     user.setFirstname(rs.getString("firstname"));
                     user.setLastname(rs.getString("lastname"));
                     user.setUsertype(rs.getString("user_type"));
@@ -185,7 +196,7 @@ public class DBManager implements Serializable {
                 pst.setString(1, tmp.getName());
                 ResultSet resu = pst.executeQuery();
                 System.out.println(resu.getString("cuisines.id"));
-                tmp.setCousineType(resu.getString("cuisines.id"));
+                //tmp.setCuisineTypes(resu.getString("cuisines.id"));
                 //qua la query per prendere il sito web
                 //tmp.setWebSiteUrl(query);
                 //altra query per prendere gli orari d' apertura
@@ -240,9 +251,9 @@ public class DBManager implements Serializable {
                     PreparedStatement pst = con.prepareStatement(query);
                     pst.setString(1, tmp.getName());
                     ResultSet resu = pst.executeQuery();
-                    if(resu.next()){
-                        tmp.setCousineType(resu.getString(1));
-                    }
+                    //if(resu.next()){
+                    //    tmp.setCuisineTypes(resu.getString(1));
+                    //}
                     resu.close();
                     pst.close(); 
                     //qua la query per prendere foto sito web
@@ -306,9 +317,9 @@ public class DBManager implements Serializable {
                 PreparedStatement pst = con.prepareStatement(query);
                 pst.setString(1, tmp.getName());
                 ResultSet resu = pst.executeQuery();
-                if(resu.next()){
-                    tmp.setCousineType(resu.getString(1));
-                }
+                //if(resu.next()){
+                //    tmp.setCuisineTypes(resu.getString(1));
+                //}
                 query = "SELECT path FROM photos WHERE id_restaurant = ?";
                 pst = con.prepareCall(query);
                 pst.setInt(1, rs.getInt("id"));
@@ -342,6 +353,244 @@ public class DBManager implements Serializable {
         
         return restaurantReviews;
         
+    }
+    
+    /**
+     *
+     * @param restaurant that needs to be added to DB
+     * @param creator
+     * @param isOwner
+     * @return
+     */
+    public boolean addRestaurant(Restaurant restaurant, int creator_id, boolean isOwner){
+        
+        int next_id = 0;
+        
+        try {
+            //query to get the next free id for restaurant
+            String query1 = "SELECT MAX(id) FROM Restaurants";
+            PreparedStatement ps1 = con.prepareStatement(query1);
+            ResultSet rs1 = ps1.executeQuery();
+            while(rs1.next()){
+                next_id = rs1.getInt(1) + 1;
+            }
+            
+            //query to add the restaurant to DB
+            String query = "INSERT INTO Restaurants VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(query);
+            
+            ps.setInt(1, next_id);
+            ps.setString(2, restaurant.getName());
+            ps.setString(3, restaurant.getAddress());
+            ps.setInt(4, restaurant.getCivicNumber());
+            ps.setString(5, restaurant.getCity());
+            ps.setString(6, restaurant.getDescription());
+            ps.setString(7, restaurant.getWebSiteUrl());
+            ps.setInt(8, 0);
+            ps.setInt(9, restaurant.getPrice());
+            if(isOwner){
+                ps.setInt(10, creator_id);
+            }else{
+                ps.setInt(10, 0);
+            }
+            ps.setInt(11, creator_id);
+            
+            int update = ps.executeUpdate();
+            
+            //query to add cuisine types to a restaurant_id
+            PreparedStatement psk = con.prepareStatement("INSERT INTO restaurant_cuisine VALUES (?,?)");
+            for(String s : restaurant.getCuisineTypes()){
+                switch (s){
+                    case "Italiana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 1);
+                        psk.executeUpdate();
+                        break;
+                    case "Asiatica":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 2);
+                        psk.executeUpdate();
+                        break;
+                    case "NordAmericana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 3);
+                        psk.executeUpdate();
+                        break;
+                    case "Africana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 4);
+                        psk.executeUpdate();
+                        break;
+                    case "Caraibica":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 5);
+                        psk.executeUpdate();
+                        break;
+                    case "SudAmericana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 6);
+                        psk.executeUpdate();
+                        break;
+                    case "NordEuropea":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 7);
+                        psk.executeUpdate();
+                        break;
+                    case "Mediterranea":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 8);
+                        psk.executeUpdate();
+                        break;
+                    case "MedioOrientale":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 9);
+                        psk.executeUpdate();
+                        break;
+                    case "Vegana":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 10);
+                        psk.executeUpdate();
+                        break;
+                    case "FastFood":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 11);
+                        psk.executeUpdate();
+                        break;
+                    case "Pizzeria":
+                        psk.setInt(1, next_id);
+                        psk.setInt(2, 12);
+                        psk.executeUpdate();
+                        break;
+                }
+            }
+            
+            //query to add hours_ranges
+            PreparedStatement psw = con.prepareStatement("INSERT INTO opening_hours_restaurants VALUES (?,?,?,?,?,?)");
+            WeekSchedule rest_week = restaurant.getWeek();
+            if(rest_week.isMonday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 1);
+                psw.setTime(3, rest_week.getMonday_l_op());
+                psw.setTime(4, rest_week.getMonday_l_cl());
+                psw.setTime(5, rest_week.getMonday_d_op());
+                psw.setTime(6, rest_week.getMonday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isTuesday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 2);
+                psw.setTime(3, rest_week.getTuesday_l_op());
+                psw.setTime(4, rest_week.getTuesday_l_cl());
+                psw.setTime(5, rest_week.getTuesday_d_op());
+                psw.setTime(6, rest_week.getTuesday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isWednesday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 3);
+                psw.setTime(3, rest_week.getWednesday_l_op());
+                psw.setTime(4, rest_week.getWednesday_l_cl());
+                psw.setTime(5, rest_week.getWednesday_d_op());
+                psw.setTime(6, rest_week.getWednesday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isThursday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 4);
+                psw.setTime(3, rest_week.getThursday_l_op());
+                psw.setTime(4, rest_week.getThursday_l_cl());
+                psw.setTime(5, rest_week.getThursday_d_op());
+                psw.setTime(6, rest_week.getThursday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isFriday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 5);
+                psw.setTime(3, rest_week.getFriday_l_op());
+                psw.setTime(4, rest_week.getFriday_l_cl());
+                psw.setTime(5, rest_week.getFriday_d_op());
+                psw.setTime(6, rest_week.getFriday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isSaturday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 6);
+                psw.setTime(3, rest_week.getSaturday_l_op());
+                psw.setTime(4, rest_week.getSaturday_l_cl());
+                psw.setTime(5, rest_week.getSaturday_d_op());
+                psw.setTime(6, rest_week.getSaturday_d_cl());
+                psw.executeUpdate();
+            }
+            if(rest_week.isSunday()){
+                psw.setInt(1, next_id);
+                psw.setInt(2, 7);
+                psw.setTime(3, rest_week.getSunday_l_op());
+                psw.setTime(4, rest_week.getSunday_l_cl());
+                psw.setTime(5, rest_week.getSunday_d_op());
+                psw.setTime(6, rest_week.getSunday_d_cl());
+                psw.executeUpdate();
+            }
+            
+            //query to get the next photo id
+            int next_photo_id = 0;
+            PreparedStatement psn = con.prepareStatement("SELECT MAX(id) FROM photos");
+            ResultSet rsp = psn.executeQuery();
+            while(rsp.next()){
+                next_photo_id = rsp.getInt(1);
+            }
+            
+            //query to insert photo
+            PreparedStatement psp = con.prepareStatement("INSERT INTO photos VALUES (?,?,?,?)");
+            psp.setInt(1, next_photo_id);
+            psp.setString(2, restaurant.getPhotoPath());
+            psp.setInt(3, next_id);
+            psp.setInt(4, creator_id);
+            
+            if(update == 0){
+                return false;
+            }
+            
+            ps1.close();
+            rs1.close();
+            ps.close();
+            psk.close();
+            psw.close();
+            
+            
+            double [] coordinates = null;
+            try {
+                coordinates = getCoordinates(restaurant.getAddress(), restaurant.getCivicNumber(), restaurant.getCity());
+            } catch (IOException ex) {
+                Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            System.out.println("Lat: "+coordinates[0]+" Long: "+coordinates[1]);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        return true;
+    }
+    
+    /**
+     *
+     * @param address
+     * @param civic
+     * @param city
+     * @return
+     * @throws java.io.IOException
+     */
+    public double[] getCoordinates(String address, int civic, String city) throws IOException{
+        String url1 = "http://maps.googleapis.com/maps/api/geocode/json";
+        double [] coordinates = new double [2];
+        String fulladdress = address+" "+civic+" "+city;
+        
+        
+        
+        return coordinates;
     }
     
 }

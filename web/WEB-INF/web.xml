@@ -6,12 +6,13 @@
     </context-param>
     <context-param>
         <param-name>dbpassword</param-name>
-        <param-value>root</param-value>
+        <param-value>000117gm</param-value>
     </context-param>
     <context-param>
         <param-name>dbuser</param-name>
         <param-value>postgres</param-value>
     </context-param>
+    
     <listener>
         <listener-class>listeners.EatItHereAppListener</listener-class>
     </listener>
@@ -40,6 +41,12 @@
         <servlet-class>servlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AddRestaurant</servlet-name>
+        <servlet-class>servlets.AddRestaurant</servlet-class>
+        <init-param>
+        <param-name>uploadDir</param-name>
+        <param-value>/home/gianma/NetBeansProjects/TestGit/progWeb420/web/media/images</param-value>
+        </init-param>
         <servlet-name>AddComment</servlet-name>
         <servlet-class>servlets.AddComment</servlet-class>
     </servlet>
@@ -68,6 +75,8 @@
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>AddRestaurant</servlet-name>
+        <url-pattern>/AddRestaurant</url-pattern>
         <servlet-name>AddComment</servlet-name>
         <url-pattern>/AddComment</url-pattern>
     </servlet-mapping>

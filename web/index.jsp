@@ -42,7 +42,7 @@
                     <li><a href="#">My profile</a></li>
                     <li><a href="#">My notifications</a></li>
                     <li><a href="#">My restaurants</a></li>
-                    <li><a href="#">Services</a></li>
+                    <li><a href="addRestaurant_page.jsp">Add restaurant</a></li>
                     <li><a href="#">About</a></li>
                     <li><a href="#">Contact</a></li>
                     <li><a href="<%=request.getContextPath()%>/LogoutServlet">Logout</a></li>

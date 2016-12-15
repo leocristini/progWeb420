@@ -348,12 +348,14 @@ public class DBManager implements Serializable {
                 + "VALUES('?','?','?','?','?','?','?')";
         
         Date date = new Date();
-        
-        String queryPerID = "SELECT id FROM restaurants WHERE name='?'";
+        System.out.println("nome ristorante: "+restaurant+""
+                + " utente: "+user
+                + " descrizione: "+description+" data: "+date);
+        String queryPerID = "SELECT id FROM restaurants WHERE name= ?";
         PreparedStatement psId = con.prepareStatement(queryPerID);
         psId.setString(1, restaurant);
         ResultSet rs = psId.executeQuery();
-        int resId = Integer.parseInt(rs.getString(0));
+        int resId = Integer.parseInt(rs.getString(1));
         rs.close();
         
         

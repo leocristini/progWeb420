@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -119,11 +120,12 @@ public class Profile extends HttpServlet {
                         "</div>"
                     
                     + "Title: <input type=\"text\" id=\"title\" name=\"title\"/><br>"
-                    + "<textarea class=\"form-control\" rows=\"4\" cols=\"50\" type=\"text\"></textarea>"
+                    + "<textarea class=\"form-control\" rows=\"4\" cols=\"50\" type=\"text\" name=\"description\"></textarea>"
                     + "<input type=\"file\" name=\"image\" accept=\"image/*\">"
                     + "<button type=\"submit\">Add review</button>");
             out.println("</form>");
-            
+            HttpSession session = request.getSession(true);
+            session.setAttribute("RestName", restName);
         }
         else{
         

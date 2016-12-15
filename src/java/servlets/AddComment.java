@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -46,8 +47,15 @@ public class AddComment extends HttpServlet {
             throws ServletException, IOException, SQLException {
         
         User userz = (User) request.getSession().getAttribute("user");
-        manager.addReviewPerRestaurant(userz.getId(), "Bella Napoli", "buono", "moltobuono", "ciao.jpg", 0);
+        String title = (String) request.getParameter("title");
+        String description = (String) request.getParameter("description");
+        String img = (String) request.getParameter("image");
         
+        HttpSession session = request.getSession(true);   
+        String restName = (String) session.getAttribute("RestName");
+        manager.addReviewPerRestaurant(userz.getId(), restName, title, description, img, 0);
+        session.removeAttribute("RestName");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

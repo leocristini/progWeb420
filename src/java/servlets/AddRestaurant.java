@@ -300,7 +300,7 @@ public class AddRestaurant extends HttpServlet {
                 String name = (String)files.nextElement();
                 File f = multi.getFile(name);
                 
-                if(f.exists()){
+                if(name.equals("rest_photo") && f.exists()){
                     restaurant.setPhotoPath(f.toString());
                 }
             }
@@ -308,7 +308,11 @@ public class AddRestaurant extends HttpServlet {
             HttpSession session = request.getSession(false);
             User user = (User) session.getAttribute("user");
             
-            String creator = user.getUsername();
+            int creator = user.getId();
+            
+            if(isOwner){
+                restaurant.setId_owner(creator);
+            }
             
             //just some debug code
             System.out.println("Restaurant data:"
@@ -326,7 +330,6 @@ public class AddRestaurant extends HttpServlet {
             for(String s: restaurant.getCuisineTypes()){
                 System.out.print(s+" ");
             }
-            
             System.out.println("Open days:\n");
             System.out.println("Monday: "+restaurant.getWeek().isMonday());
             if(restaurant.getWeek().isMonday()){

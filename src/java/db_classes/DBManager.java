@@ -5,7 +5,8 @@
  */
 package db_classes;
 
-import com.sun.crypto.provider.RSACipher;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,8 +16,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import info.debatty.java.stringsimilarity.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.logging.Level;
-
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -67,6 +75,7 @@ public class DBManager implements Serializable {
                 if (rs.next()){
                     User user = new User();
                     user.setUsername(username);
+                    user.setId(rs.getInt("id"));
                     user.setFirstname(rs.getString("firstname"));
                     user.setLastname(rs.getString("lastname"));
                     user.setUsertype(rs.getString("user_type"));
@@ -339,10 +348,9 @@ public class DBManager implements Serializable {
      * @param isOwner
      * @return
      */
-    public boolean addRestaurant(Restaurant restaurant, String creator, boolean isOwner){
+    public boolean addRestaurant(Restaurant restaurant, int creator_id, boolean isOwner){
         
         int next_id = 0;
-        int creator_id = 0;
         
         try {
             //query to get the next free id for restaurant
@@ -351,15 +359,6 @@ public class DBManager implements Serializable {
             ResultSet rs1 = ps1.executeQuery();
             while(rs1.next()){
                 next_id = rs1.getInt(1) + 1;
-            }
-            
-            //query to get the id of the creator
-            String query2 = "SELECT id FROM Users WHERE username = ?";
-            PreparedStatement ps2 = con.prepareStatement(query2);
-            ps2.setString(1, creator);
-            ResultSet rs2 = ps2.executeQuery();
-            while(rs2.next()){
-                creator_id = rs2.getInt(1);
             }
             
             //query to add the restaurant to DB
@@ -518,17 +517,40 @@ public class DBManager implements Serializable {
                 psw.executeUpdate();
             }
             
+            //query to get the next photo id
+            int next_photo_id = 0;
+            PreparedStatement psn = con.prepareStatement("SELECT MAX(id) FROM photos");
+            ResultSet rsp = psn.executeQuery();
+            while(rsp.next()){
+                next_photo_id = rsp.getInt(1);
+            }
+            
+            //query to insert photo
+            PreparedStatement psp = con.prepareStatement("INSERT INTO photos VALUES (?,?,?,?)");
+            psp.setInt(1, next_photo_id);
+            psp.setString(2, restaurant.getPhotoPath());
+            psp.setInt(3, next_id);
+            psp.setInt(4, creator_id);
+            
             if(update == 0){
                 return false;
             }
             
             ps1.close();
             rs1.close();
-            ps2.close();
-            rs2.close();
             ps.close();
             psk.close();
             psw.close();
+            
+            
+            double [] coordinates = null;
+            try {
+                coordinates = getCoordinates(restaurant.getAddress(), restaurant.getCivicNumber(), restaurant.getCity());
+            } catch (IOException ex) {
+                Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            System.out.println("Lat: "+coordinates[0]+" Long: "+coordinates[1]);
             
         } catch (SQLException ex) {
             Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -537,6 +559,24 @@ public class DBManager implements Serializable {
         
         
         return true;
+    }
+    
+    /**
+     *
+     * @param address
+     * @param civic
+     * @param city
+     * @return
+     * @throws java.io.IOException
+     */
+    public double[] getCoordinates(String address, int civic, String city) throws IOException{
+        String url1 = "http://maps.googleapis.com/maps/api/geocode/json";
+        double [] coordinates = new double [2];
+        String fulladdress = address+" "+civic+" "+city;
+        
+        
+        
+        return coordinates;
     }
     
 }

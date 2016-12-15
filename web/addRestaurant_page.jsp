@@ -537,7 +537,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="image_upload">Immagine:</label>
-                            <input id="image_upload" required="true" name="file_up" type="file" class="form-control">
+                            <input id="image_upload" required="true" name="rest_photo" type="file" class="form-control">
                         </div>
                     </div>
                 </div>

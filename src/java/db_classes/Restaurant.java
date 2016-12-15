@@ -15,6 +15,7 @@ public class Restaurant implements Serializable{
     
     private int id;
     private int priority;
+    private int global_value;
     private String name;
     private String address;
     private int civicNumber;
@@ -25,6 +26,7 @@ public class Restaurant implements Serializable{
     private WeekSchedule week;
     private int price;
     private String photoPath;
+    private int id_owner;
     
     /**
      * @return the id
@@ -194,7 +196,33 @@ public class Restaurant implements Serializable{
     public void setWeek(WeekSchedule week) {
         this.week = week;
     }
-    
-    
+
+    /**
+     * @return the global_value
+     */
+    public int getGlobal_value() {
+        return global_value;
+    }
+
+    /**
+     * @param global_value the global_value to set
+     */
+    public void setGlobal_value(int global_value) {
+        this.global_value = global_value;
+    }
+
+    /**
+     * @return the id_owner
+     */
+    public int getId_owner() {
+        return id_owner;
+    }
+
+    /**
+     * @param id_owner the id_owner to set
+     */
+    public void setId_owner(int id_owner) {
+        this.id_owner = id_owner;
+    }
     
 }

@@ -20,6 +20,20 @@ public class User implements Serializable {
     private String usertype;
 
     /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    /**
      * @return the username
      */
     public String getUsername() {
@@ -75,18 +89,6 @@ public class User implements Serializable {
         this.usertype = usertype;
     }
 
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
+    
     
 }

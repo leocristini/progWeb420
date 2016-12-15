@@ -85,4 +85,8 @@
             30
         </session-timeout>
     </session-config>
+    <servlet>
+        <servlet-name>AddComment</servlet-name>
+        <servlet-class>servlets.AddComment</servlet-class>
+    </servlet>
 </web-app>

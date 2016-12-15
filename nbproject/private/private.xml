@@ -4,11 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/src/java/db_classes/Restaurant.java</file>
+<<<<<<< HEAD
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/nbproject/build-impl.xml</file>
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/web/index.jsp</file>
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/src/java/db_classes/DBManager.java</file>
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/src/java/servlets/AddComment.java</file>
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/web/media/js/scripts.js</file>
+=======
+            <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/web/index.jsp</file>
+            <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/src/java/db_classes/DBManager.java</file>
+>>>>>>> test_modifica
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/web/header.jsp</file>
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/web/media/css/styles.css</file>
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/src/java/servlets/Profile.java</file>

@@ -53,6 +53,7 @@
   position: absolute;
   left: -18em;
   top: 0;
+  height:100%;
   padding-top: 5em;
   box-sizing: border-box;
   z-index: 20;
@@ -90,9 +91,14 @@ body{
     
 }
 #jumbo-res{
-    top:0px
+    top:0px;
 }
 
+#map {
+    height: 400px;
+    
+    top: 500px;
+}
 
 
 .acidjs-rating-stars,

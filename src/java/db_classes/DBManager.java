@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import info.debatty.java.stringsimilarity.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -23,6 +24,11 @@ import java.util.logging.Level;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  *
@@ -271,7 +277,6 @@ public class DBManager implements Serializable {
                     
                 }
                 i++;
-                System.out.println(results.size()+" $$ i: "+i);
                 
                 
             }
@@ -339,7 +344,44 @@ public class DBManager implements Serializable {
         
     }
     //chiamata quando si effettua un commento
-    public void addReviewPerRestaurant(String user,String restaurant){
+    /**
+     * 
+     * @param user nome dell' utente che commenta
+     * @param restaurant ristorante che riceve il commento
+     * @param title titolo della recensione
+     * @param description la recensine vera e propria
+     * @param img l' immagine allegata
+     * @param rating le stelline
+     * @throws SQLException 
+     */
+    public void addReviewPerRestaurant(int user,String restaurant, String title, String description, String img, int rating) throws SQLException{
+        
+        String query = "INSERT INTO reviews (name,description,date_creation,id_restaurant,id_creator,id_photo,global_value)"
+                + "VALUES('?','?','?','?','?','?','?')";
+        
+        Date date = new Date();
+        System.out.println("nome ristorante: "+restaurant+""
+                + " utente: "+user
+                + " descrizione: "+description+" data: "+date);
+        String queryPerID = "SELECT id FROM restaurants WHERE name= ?";
+        PreparedStatement psId = con.prepareStatement(queryPerID);
+        psId.setString(1, restaurant);
+        ResultSet rs = psId.executeQuery();
+        int resId = Integer.parseInt(rs.getString(1));
+        rs.close();
+        
+        
+        PreparedStatement psReview = con.prepareStatement(query);
+        psReview.setString(1, restaurant);
+        psReview.setString(2, description);
+        psReview.setString(3, date.toString());
+        psReview.setInt(4, resId);
+        psReview.setInt(5, user);
+        psReview.setString(6, img);
+        psReview.setInt(rating, rating);
+        
+        ResultSet reSet = psReview.executeQuery();
+        
     }
     
     //aggiungi recensione

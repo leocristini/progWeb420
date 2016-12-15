@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -83,7 +84,6 @@ public class Profile extends HttpServlet {
             }
         //provo a stampare il punteggio
         
-        System.out.println(request.getAttribute("rating"));
         out.println("</div>");
         
         
@@ -98,18 +98,34 @@ public class Profile extends HttpServlet {
            +"<br><h3>Oradi di apertura:</h3> "+res_tmp.getWeek().getTuesday_l_op()+""
            +"<br><h3>Where are we:<br></h3>");
            //qui andrebbe mappa
+
            
         
         out.println("</div><div class=col-md-2></div>");
-        out.println("<div class=\"row\"><div class=\"col-md-2 col-md-offset-8\"");
+        out.println("<div class=\"row\"><div class=\"col-md-6 col-md-offset-2\">");
         if(request.getSession().getAttribute("user")!=null){
-            //se è loggato allora ha l' opportunità di commentare
-            out.println("<form action=\"AddComment\" type=\"POST\">"
-                    + "<label for=\"comment\">Add a comment for this restaurant</label>"
-                    + "<input type=\"text\" id=\"comment\" name=\"comment\"/>"
-                    + "<br>"
-                    + "<button class=\"btn btn-default\" type=\"submit\" formmethod=\"post\">Comment</button>"
-                    + "</form>");
+            //se è loggato allora ha l' opportunità di commentare e mettere le stelline
+            
+            //qua invece è il commento vero e proprio
+            out.println("<form action=\"AddComment\" type=\"post\">"
+                    + "<label for=\"comment\">Add a review for this restaurant</label><br>"
+                    //le stelline
+                    +"<div name=\"rating\" class=\" acidjs-rating-stars\">"+
+                        ""+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-0\" value=\"5\" /><label for=\"group-2-0\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-1\" value=\"4\" /><label for=\"group-2-1\"></label>"+
+                            "<input type=\"radio\" checked=\"checked\" name=\"group-2\" id=\"group-2-2\" value=\"3\" /><label for=\"group-2-2\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-3\" value=\"2\" /><label for=\"group-2-3\"></label>"+
+                            "<input type=\"radio\" name=\"group-2\" id=\"group-2-4\"  value=\"1\" /><label for=\"group-2-4\"></label>"+
+                        "</div>"
+                    
+                    + "Title: <input type=\"text\" id=\"title\" name=\"title\"/><br>"
+                    + "<textarea class=\"form-control\" rows=\"4\" cols=\"50\" type=\"text\" name=\"description\"></textarea>"
+                    + "<input type=\"file\" name=\"image\" accept=\"image/*\">"
+                    + "<button type=\"submit\">Add review</button>");
+            out.println("</form>");
+            HttpSession session = request.getSession(true);
+            session.setAttribute("RestName", restName);
         }
         else{
         
@@ -118,6 +134,10 @@ public class Profile extends HttpServlet {
                     + "<br>");
         
         }
+        
+        //devo prendere una lista di tutte le review per il dato ristorante
+        
+        
         
         out.println("</div><script src=\"media/js/jquery-3.1.1.min.js\"></script>\n" +
 "        <script src=\"media/js/scripts.js\"></script>");

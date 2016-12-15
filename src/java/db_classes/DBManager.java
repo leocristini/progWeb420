@@ -23,8 +23,6 @@ import java.util.logging.Level;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.apache.commons.io.IOUtils;
 
 /**
  *

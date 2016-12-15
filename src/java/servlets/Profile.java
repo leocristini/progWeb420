@@ -95,7 +95,7 @@ public class Profile extends HttpServlet {
         
            //qua descrizione
            out.println(res_tmp.getDescription()
-           +"<br><h3>Oradi di apertura:</h3> "+res_tmp.getOpeningHours()
+           +"<br><h3>Oradi di apertura:</h3> "+res_tmp.getWeek().getTuesday_l_op()+""
            +"<br><h3>Where are we:<br></h3>");
            //qui andrebbe mappa
            

@@ -6,6 +6,7 @@
 <<<<<<< HEAD
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/web/addRestaurant_page.jsp</file>
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/db_classes/DBManager.java</file>
+<<<<<<< HEAD
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/web/media/js/scripts.js</file>
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/servlets/LoginServlet.java</file>
             <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/web/index.jsp</file>
@@ -24,6 +25,11 @@
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/src/java/servlets/LoginServlet.java</file>
             <file>file:/home/leonardo/NetBeansProjects/Eat_v1.0/web/media/css/styles.css</file>
 >>>>>>> 694a52e78b8303835b77f510deb9f3d42d62cf6f
+=======
+            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/servlets/AddRestaurant.java</file>
+            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/db_classes/WeekSchedule.java</file>
+            <file>file:/home/gianma/NetBeansProjects/TestGit/progWeb420/src/java/db_classes/Restaurant.java</file>
+>>>>>>> addRestaurantFunc
         </group>
     </open-files>
 </project-private>

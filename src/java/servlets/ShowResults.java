@@ -65,20 +65,21 @@ public class ShowResults extends HttpServlet {
                         HttpSession session = request.getSession(false);
                         String newName = searched_res.get(i).getName();
                         String tmp = new String();
-                        tmp = newName.replaceAll("\\s+","");
+                        tmp = newName.replaceAll("\\s+","_");
                         session.setAttribute("name", searched_res.get(i).getName());
                         out.println("<tr>");
-                        out.println("<ul><h1><a onclick=\"$(this).closest('form').submit()\" id=\"res_name\">"+searched_res.get(i).getName()+" </a></h1></ul>");
+                        out.println("<ul><h1><a href=\"Profile?name="+tmp+"\" id=\"res_name\">"+searched_res.get(i).getName()+" </a></h1></ul>");
                         out.println("<ul> "+searched_res.get(i).getDescription()+" </ul>");
                         //out.println("<ul> "+searched_res.get(i).getCuisineTypes()+" </ul>");
                         out.println("<ul><a href=\""+searched_res.get(i).getWebSiteUrl()+"\">"+searched_res.get(i).getWebSiteUrl()+"</a> </ul>");
                         out.println("</tr>");
-                }
-                
+                }                
                 
             }
             
             out.println("</table></form></div><div class=\"col-md-2\"></div>"
+                    +"<script src=\"media/js/jquery-3.1.1.min.js\"></script>"
+                    +"<script src=\"media/js/scripts.js\"></script>"
                     + "</body></html>");
         } catch (SQLException ex) {
             Logger.getLogger(ShowResults.class.getName()).log(Level.SEVERE, null, ex);

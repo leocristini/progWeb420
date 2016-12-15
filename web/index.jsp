@@ -82,19 +82,10 @@
             <div class="col-md-2"></div>
             
         </nav>
-                
-        <div class="row ">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-
-                <div class="jumbotron">
-                <!-- qui ci si piazza la mappa centrata sulla pos + i ristoranti vicini  -->
-                </div>
-
-            </div>
-            <div class="col-md-2"></div>
+        <img id="bg_image" src="media/images/home_restaurant.jpg">
+        <div clas="jumbotron" >
+            <h1>The best way to eat</h1>
         </div>
-
         
         
   

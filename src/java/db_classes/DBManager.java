@@ -340,6 +340,20 @@ public class DBManager implements Serializable {
         return tmp;
         
     }
+    //chiamata quando si effettua un commento
+    public void addReviewPerRestaurant(String user,String restaurant){
+    }
+    
+    //aggiungi recensione
+    public ArrayList<String> getReviewPerRestaurant(String restaurant){
+        
+        ArrayList<String> restaurantReviews = new ArrayList<>();
+        
+        
+        
+        return restaurantReviews;
+        
+    }
     
     /**
      *
